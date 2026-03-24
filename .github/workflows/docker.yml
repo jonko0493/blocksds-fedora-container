@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: CC0-1.0
 #
 # SPDX-FileContributor: Antonio Niño Díaz, 2025
-# SPDX-FileContributor: Jonko, 2026
 
 name: Docker images
 
@@ -19,6 +18,8 @@ on:
         description: 'Tag of version to build or "latest"'
         required: true
         default: 'latest'
+  #repository_dispatch:
+  #  types: [build_docker_event]
 
 permissions:
   contents: read
@@ -39,6 +40,13 @@ jobs:
           submodules: 'false'
           fetch-depth: 0
 
+      - name: Login to the container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
@@ -52,27 +60,27 @@ jobs:
         if: ${{ github.event.inputs.new_version != 'latest' }}
         with:
           context: docker # Folder with the Dockerfile
-          target: blocksds-dev-fedora
+          target: blocksds-dev
           build-args: |
             BRANCH=${{ github.event.inputs.new_version }}
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            skylyrac/blocksds:dev-fedora-${{ github.event.inputs.new_version }}
-            skylyrac/blocksds:dev-fedora-latest
+            ${{ github.repository }}:dev-${{ github.event.inputs.new_version }}
+            ${{ github.repository }}:dev-latest
 
       - name: Build and push (dev, latest)
         uses: docker/build-push-action@v6
         if: ${{ github.event.inputs.new_version == 'latest' }}
         with:
           context: docker # Folder with the Dockerfile
-          target: blocksds-dev-fedora
+          target: blocksds-dev
           build-args: |
             BRANCH=master
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            skylyrac/blocksds:dev-fedora-latest
+            ${{ github.repository }}:dev-latest
 
       # slim images
 
@@ -81,24 +89,24 @@ jobs:
         if: ${{ github.event.inputs.new_version != 'latest' }}
         with:
           context: docker # Folder with the Dockerfile
-          target: blocksds-slim-fedora
+          target: blocksds-slim
           build-args: |
             BRANCH=${{ github.event.inputs.new_version }}
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            skylyrac/blocksds:slim-fedora-${{ github.event.inputs.new_version }}
-            skylyrac/blocksds:slim-fedora-latest
+            ${{ github.repository }}:slim-${{ github.event.inputs.new_version }}
+            ${{ github.repository }}:slim-latest
 
       - name: Build and push (slim, latest)
         uses: docker/build-push-action@v6
         if: ${{ github.event.inputs.new_version == 'latest' }}
         with:
           context: docker # Folder with the Dockerfile
-          target: blocksds-slim-fedora
+          target: blocksds-slim
           build-args: |
             BRANCH=master
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            skylyrac/blocksds:slim-fedora-latest
+            ${{ github.repository }}:slim-latest
