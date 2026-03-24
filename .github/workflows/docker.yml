@@ -59,7 +59,7 @@ jobs:
         if: ${{ github.event.inputs.new_version != 'latest' }}
         with:
           context: . # Folder with the Dockerfile
-          target: blocksds-dev
+          target: blocksds-dev-fedora
           build-args: |
             BRANCH=${{ github.event.inputs.new_version }}
           platforms: linux/amd64,linux/arm64
@@ -73,7 +73,7 @@ jobs:
         if: ${{ github.event.inputs.new_version == 'latest' }}
         with:
           context: . # Folder with the Dockerfile
-          target: blocksds-dev
+          target: blocksds-dev-fedora
           build-args: |
             BRANCH=master
           platforms: linux/amd64,linux/arm64
@@ -88,7 +88,7 @@ jobs:
         if: ${{ github.event.inputs.new_version != 'latest' }}
         with:
           context: . # Folder with the Dockerfile
-          target: blocksds-slim
+          target: blocksds-slim-fedora
           build-args: |
             BRANCH=${{ github.event.inputs.new_version }}
           platforms: linux/amd64,linux/arm64
@@ -102,7 +102,7 @@ jobs:
         if: ${{ github.event.inputs.new_version == 'latest' }}
         with:
           context: . # Folder with the Dockerfile
-          target: blocksds-slim
+          target: blocksds-slim-fedora
           build-args: |
             BRANCH=master
           platforms: linux/amd64,linux/arm64
