@@ -66,8 +66,8 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ${{ github.repository }}:dev-${{ github.event.inputs.new_version }}
-            ${{ github.repository }}:dev-latest
+            ghcr.io/${{ github.repository }}:dev-${{ github.event.inputs.new_version }}
+            ghcr.io/${{ github.repository }}:dev-latest
 
       - name: Build and push (dev, latest)
         uses: docker/build-push-action@v6
@@ -80,7 +80,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ${{ github.repository }}:dev-latest
+            ghcr.io/${{ github.repository }}:dev-latest
 
       # slim images
 
@@ -95,8 +95,8 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ${{ github.repository }}:slim-${{ github.event.inputs.new_version }}
-            ${{ github.repository }}:slim-latest
+            ghcr.io/${{ github.repository }}:slim-${{ github.event.inputs.new_version }}
+            ghcr.io/${{ github.repository }}:slim-latest
 
       - name: Build and push (slim, latest)
         uses: docker/build-push-action@v6
@@ -109,4 +109,4 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ${{ github.repository }}:slim-latest
+            ghcr.io/${{ github.repository }}:slim-latest
