@@ -81,15 +81,15 @@ FROM base-cross-compiler AS blocksds-slim
 
 FROM fedora:rawhide AS fedora-base-cross-compiler
 
-ARG BRANCH=master
+# Set TARGETARCH e.g. amd64, arm64, riscv64.
 ARG TARGETARCH
 
+# Set locale for iconv, used by ndstool
 ENV LANG=C.UTF-8
 ENV LC_ALL=C.UTF-8
 
 RUN dnf -y update && \
-    dnf -y install \
-        ca-certificates curl git make tar && \
+    dnf -y install git make && \
     dnf clean all
 
 RUN mkdir -p /opt/wonderful/
@@ -98,7 +98,7 @@ ADD https://wonderful.asie.pl/bootstrap/wf-bootstrap-aarch64.tar.gz /opt/wonderf
 
 RUN cd /opt/wonderful/ && \
     tar xzvf wf-bootstrap-$(uname -m).tar.gz && \
-    rm wf-bootstrap-*.tar.gz
+    rm -f wf-bootstrap-*.tar.gz
 
 ENV PATH=/opt/wonderful/bin:$PATH
 
@@ -106,6 +106,9 @@ ENV PATH=/opt/wonderful/bin:$PATH
 # there is a better way to fix it.
 RUN cd etc && \
     ln -sf ../proc/self/mounts mtab
+
+# TODO: Remove when asie figures out what to do about this lol
+RUN ln -s /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem /etc/ssl/certs/ca-certificates.crt
 
 RUN wf-pacman -Syu --noconfirm && \
     wf-pacman -Syu --noconfirm wf-tools && \
