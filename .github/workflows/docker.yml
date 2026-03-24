@@ -58,7 +58,7 @@ jobs:
         uses: docker/build-push-action@v6
         if: ${{ github.event.inputs.new_version != 'latest' }}
         with:
-          context: docker # Folder with the Dockerfile
+          context: . # Folder with the Dockerfile
           target: blocksds-dev
           build-args: |
             BRANCH=${{ github.event.inputs.new_version }}
@@ -72,7 +72,7 @@ jobs:
         uses: docker/build-push-action@v6
         if: ${{ github.event.inputs.new_version == 'latest' }}
         with:
-          context: docker # Folder with the Dockerfile
+          context: . # Folder with the Dockerfile
           target: blocksds-dev
           build-args: |
             BRANCH=master
@@ -87,7 +87,7 @@ jobs:
         uses: docker/build-push-action@v6
         if: ${{ github.event.inputs.new_version != 'latest' }}
         with:
-          context: docker # Folder with the Dockerfile
+          context: . # Folder with the Dockerfile
           target: blocksds-slim
           build-args: |
             BRANCH=${{ github.event.inputs.new_version }}
@@ -101,7 +101,7 @@ jobs:
         uses: docker/build-push-action@v6
         if: ${{ github.event.inputs.new_version == 'latest' }}
         with:
-          context: docker # Folder with the Dockerfile
+          context: . # Folder with the Dockerfile
           target: blocksds-slim
           build-args: |
             BRANCH=master
