@@ -79,7 +79,7 @@ FROM base-cross-compiler AS blocksds-slim
 # Fedora Rawhide Variants
 # =================
 
-FROM fedora:rawhide AS fedora-base-cross-compiler
+FROM fedora:44 AS fedora-base-cross-compiler
 
 # Set TARGETARCH e.g. amd64, arm64, riscv64.
 ARG TARGETARCH
