@@ -107,9 +107,6 @@ ENV PATH=/opt/wonderful/bin:$PATH
 RUN cd etc && \
     ln -sf ../proc/self/mounts mtab
 
-# TODO: Remove when asie figures out what to do about this lol
-RUN ln -s /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem /etc/ssl/certs/ca-certificates.crt
-
 RUN wf-pacman -Syu --noconfirm && \
     wf-pacman -Syu --noconfirm wf-tools && \
     wf-config repo enable blocksds && \
