@@ -42,7 +42,8 @@ RUN wf-pacman -Syu --noconfirm && \
     wf-pacman -Syu --noconfirm wf-tools && \
     wf-config repo enable blocksds && \
     wf-pacman -Syu --noconfirm && \
-    wf-pacman -S --noconfirm blocksds-toolchain
+    wf-pacman -S --noconfirm blocksds-toolchain && \
+    wf-config clean-caches --all
 
 # Setup the environment variables for a wf-pacman installation
 ENV BLOCKSDS=/opt/wonderful/thirdparty/blocksds/core
@@ -60,11 +61,13 @@ WORKDIR /work/
 FROM base-cross-compiler AS blocksds-dev
 
 # Install all additional BlocksDS packages
-RUN wf-pacman -S --noconfirm blocksds-default blocksds-extra
+RUN wf-pacman -S --noconfirm blocksds-default blocksds-extra && \
+    wf-config clean-caches --all
 
 # Install Teak toolchain only in the dev image
 RUN if [ $TARGETARCH = "amd64" ]; then \
         wf-pacman -S --noconfirm toolchain-llvm-teak-llvm ; \
+        wf-config clean-caches --all ; \
     fi
 
 # Slim image
@@ -111,7 +114,8 @@ RUN wf-pacman -Syu --noconfirm && \
     wf-pacman -Syu --noconfirm wf-tools && \
     wf-config repo enable blocksds && \
     wf-pacman -Syu --noconfirm && \
-    wf-pacman -S --noconfirm blocksds-toolchain
+    wf-pacman -S --noconfirm blocksds-toolchain && \
+    wf-config clean-caches --all
 
 ENV BLOCKSDS=/opt/wonderful/thirdparty/blocksds/core
 ENV BLOCKSDSEXT=/opt/wonderful/thirdparty/blocksds/external
@@ -126,10 +130,12 @@ WORKDIR /work/
 
 FROM fedora-base-cross-compiler AS blocksds-dev-fedora
 
-RUN wf-pacman -S --noconfirm blocksds-default blocksds-extra
+RUN wf-pacman -S --noconfirm blocksds-default blocksds-extra && \
+    wf-config clean-caches --all
 
 RUN if [ "$TARGETARCH" = "amd64" ]; then \
         wf-pacman -S --noconfirm toolchain-llvm-teak-llvm ; \
+        wf-config clean-caches --all ; \
     fi
 
 # Slim image
